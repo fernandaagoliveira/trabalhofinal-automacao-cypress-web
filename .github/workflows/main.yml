@@ -3,8 +3,7 @@ name: Pipeline de Testes Automatizados com Cypress
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   executar-testes:
@@ -19,20 +18,22 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
 
       - name: Instalar dependências
         run: npm ci
-
-      - name: Instalar Cypress
-        run: npx cypress install
+        env:
+          NODE_ENV: development
 
       - name: Executar testes em modo headless
-        run: npm test
+        run: npx cypress run
 
-      - name: Publicar relatório HTML como artefato
-        if: always()
+      - name: Publicar artefatos
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
-          name: relatorio-cypress-html
-          path: cypress/reports/
-          retention-days: 30
+          name: relatorios-cypress
+          path: |
+            cypress/reports
+            cypress/screenshots
+            cypress/videos
