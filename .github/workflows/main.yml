@@ -1,8 +1,6 @@
 name: Pipeline de Testes Automatizados com Cypress
 
-on:
-  push:
-    branches: [ "main" ]
+on: 
   workflow_dispatch:
 
 jobs:
