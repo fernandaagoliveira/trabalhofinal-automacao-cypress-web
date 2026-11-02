@@ -1,0 +1,38 @@
+name: Pipeline de Testes Automatizados com Cypress
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  executar-testes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js versão 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar testes em modo headless
+        uses: cypress-io/github-action@v6
+        with:
+          record: false
+          browser: chrome
+
+      - name: Publicar relatório HTML como artefato
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-cypress-html
+          path: cypress/reports/html/
+          retention-days: 30

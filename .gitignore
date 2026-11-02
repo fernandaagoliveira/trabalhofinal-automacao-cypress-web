@@ -1,0 +1,15 @@
+# Dependências
+node_modules/
+
+# Arquivos gerados pelo Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+
+# Relatórios de execução
+cypress/reports/
+
+# Arquivos temporários
+*.log
+.DS_Store
+Thumbs.db
