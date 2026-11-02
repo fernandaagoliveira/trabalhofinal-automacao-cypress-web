@@ -23,16 +23,16 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
+      - name: Instalar Cypress
+        run: npx cypress install
+
       - name: Executar testes em modo headless
-        uses: cypress-io/github-action@v6
-        with:
-          record: false
-          browser: chrome
+        run: npm test
 
       - name: Publicar relatório HTML como artefato
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: relatorio-cypress-html
-          path: cypress/reports/html/
+          path: cypress/reports/
           retention-days: 30
